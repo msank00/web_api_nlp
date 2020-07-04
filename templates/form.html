@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Cosine Similarity</title>
+    </head>
+    <body>
+        <h1>Get similarity score</h1>
+        <form method="POST">
+            Document 1: <textarea name="text1" rows="5" cols="30"></textarea><br><br>
+            Document 2: <textarea name="text2" rows="5" cols="30"></textarea><br><br>
+            <input type="submit">
+        </form>
+        {% if sim_score %}
+        <h2>Cosine similarity between '{{ text1 }}' and '{{ text2 }}' is {{ sim_score }}</h2>
+        {% else %}
+        <h2>Cosine similarity between '{{ text1 }}' and '{{ text2 }}' is NA or {{ sim_score }}</h2>
+        {% endif %}
+    </body>
+</html>
