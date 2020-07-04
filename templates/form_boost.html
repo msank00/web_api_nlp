@@ -12,19 +12,23 @@
     <body>
         <h1>Get similarity score</h1>
         <form method="POST">
+              <div class="row">
                 <div class="form-group w-50">
-                    <label for="comment"><h2>Document 1</h2></label>
-                    <textarea class="form-control" name="text1" rows="5" id="comment"></textarea>
+                  <label for="comment"><h2>Document 1</h2></label>
+                  <textarea class="form-control" name="text1" rows="5" id="comment"></textarea>
                 </div> 
-                
+              
                 <div class="form-group w-50">
-                    <label for="comment"><h2>Document 2</h2></label>
-                    <textarea class="form-control" name="text2" rows="5" id="comment"></textarea>
-                </div> 
-            
+                  <label for="comment"><h2>Document 2</h2></label>
+                  <textarea class="form-control" name="text2" rows="5" id="comment"></textarea>
+                </div>
+              </div>
             <input type="submit">
         </form>
-        <div class="card text-center border-light mb-3 w-50">
+
+        {% if sim_score %}
+        <div class="row">
+          <div class="card text-center border-light mb-3 w-50">
             <div class="card-header"><h2>Document 1</h2></div>
             <div class="card-body">
               <h2>{{ text1 }}</h2>
@@ -37,9 +41,8 @@
               <h2>{{ text2 }}</h2>
             </div>
           </div>
+        </div>
 
-        {% if sim_score %}
-        <h2></h2>
         <div class="card  text-center border-info mb-3 w-25">
             <div class="card-header"><h2>Similarity Score</h2></div>
             <div class="card-body">
@@ -47,7 +50,21 @@
             </div>
         </div>
         {% else %}
-        <h2></h2>
+        <div class="row">
+          <div class="card text-center border-light mb-3 w-50">
+            <div class="card-header"><h2>Document 1</h2></div>
+            <div class="card-body">
+              <h2>{{ text1 }}</h2>
+            </div>
+          </div>
+        
+          <div class="card text-center border-light mb-3 w-50">
+            <div class="card-header"><h2>Document 2</h2></div>
+            <div class="card-body">
+              <h2>{{ text2 }}</h2>
+            </div>
+          </div>
+        </div>
         <div class="card text-center border-warning mb-3 w-25">
             <div class="card-header"><h2>Similarity Score</h2></div>
             <div class="card-body text-warning">
