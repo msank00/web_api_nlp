@@ -8,9 +8,11 @@ set(stopwords.words('english'))
 
 app = Flask(__name__)
 
+form_type = "form_boost.html"
+
 @app.route("/")
 def my_form():
-    return render_template("form.html")
+    return render_template(form_type)
 
 @app.route("/", methods=['POST'])
 def sentence_similarity():
@@ -22,7 +24,7 @@ def sentence_similarity():
     
     print(f"similarity score: {similarity_score}")
     
-    return render_template('form.html', 
+    return render_template(form_type, 
                            sim_score=similarity_score, 
                            text1 = text1, 
                            text2 = text2)
