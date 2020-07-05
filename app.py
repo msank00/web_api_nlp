@@ -2,13 +2,13 @@ from flask import Flask, request, render_template
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.corpus import stopwords
-
+import numpy as np
 
 set(stopwords.words('english'))
 
 app = Flask(__name__)
 
-form_type = "form_boost.html"
+form_type = "form_boost_v2.html"
 
 @app.route("/")
 def my_form():
@@ -41,7 +41,7 @@ def get_similarity_score(text1:str, text2:str):
     vectorizer = TfidfVectorizer()
     tfidf = vectorizer.fit_transform(corpus)
     
-    similarity_score = cosine_similarity(tfidf)[0,1] 
+    similarity_score = np.round(cosine_similarity(tfidf)[0,1] , 4)
     
     return similarity_score
 

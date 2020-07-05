@@ -1,0 +1,19 @@
+.bg {
+    /* The image used */
+
+    /*
+    background-image: url('https://mdbootstrap.com/img/Photos/Others/architecture.jpg');
+    */
+
+    background-image: url('https://www.wallpaperup.com/uploads/wallpapers/2017/05/23/1090508/dcf644e067218662e0b39b5dc70c9b8f-700.jpg');
+    
+  
+    /* Full height */
+    height: 100%;
+    width: 100%;
+  
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
