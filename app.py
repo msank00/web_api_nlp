@@ -46,5 +46,5 @@ def get_similarity_score(text1:str, text2:str):
     return similarity_score
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0",port=5002, threaded=True)
+    app.run(debug=True, host="0.0.0.0",port=8090, threaded=True)
     
