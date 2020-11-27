@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Query Search and Expansion</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- Custom styles for this template -->
+    <link href="/static/css/form_upload.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="bg">
+        <br>
+        <br>
+        <h1 align="center">Query Expansion and Search Demo</h1>
+        <br>
+        <br>
+      <div class="row">
+        <div class="col-sm">
+            <form method="POST" action="/queryexpansion/">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col px-md-4">
+                      <div class="form-group">
+                        <textarea
+                          class="form-control"
+                          name="text1"
+                          rows="2"
+                          id="comment"
+                        ></textarea>
+                      </div>
+                    </div>
+        
+                  </div>
+        
+                  <div class="row">
+                    <div class="col px-md-5">
+                        <div class="text-center">
+                            <button class="btn btn-dark btn-lg" type="submit">Expand Query</button>
+                        </div>    
+                    </div>
+        
+                  </div>
+                </div>
+              </form>
+        </div>
+        <div class="col-sm">
+            <form method="POST" action="/querysearch/">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col px-md-4">
+                      <div class="form-group">
+                        <textarea
+                          class="form-control"
+                          name="text2"
+                          rows="2"
+                          id="comment"
+                        ></textarea>
+                      </div>
+                    </div>
+        
+                  </div>
+        
+                  <div class="row">
+                    <div class="col px-md-5">
+                        <div class="text-center">
+                            <button class="btn btn-dark btn-lg" type="submit">Search Documents - Semantic</button>
+                        </div>    
+                    </div>
+        
+                  </div>
+                </div>
+              </form>
+        </div>
+    
+        <div class="col-sm">
+            <form method="POST" action="/keywordsearch/">
+                <div class="container-fluid">
+                  <div class="row">
+                    <div class="col px-md-4">
+                      <div class="form-group">
+                        <textarea
+                          class="form-control"
+                          name="text3"
+                          rows="2"
+                          id="comment"
+                        ></textarea>
+                      </div>
+                    </div>
+        
+                  </div>
+        
+                  <div class="row">
+                    <div class="col px-md-5">
+                        <div class="text-center">
+                            <button class="btn btn-dark btn-lg" type="submit">Search Documents - Keyword</button>
+                        </div>    
+                    </div>
+        
+                  </div>
+                </div>
+              </form>
+        </div>
+    
+    </div>
+
+      <br>
+      <br>
+
+      <form method="POST" action="/reset/">
+        <div class="row">
+            <div class="col px-md-5">
+                <div class="text-center">
+                    <button class="btn btn-danger btn-lg btn-custom-width" type="submit">Reset</button>
+                </div>    
+            </div>
+
+          </div>
+      </form>
+
+      <br>
+
+      {% if query_expand %}
+      <div class="row">
+        <div class="col-sm">
+            <div class="container-fluid">
+                <h1> Input Query: {{query}} </h1>
+                    <div class="bs-example">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-header"><b>N-gram based Query Suggestion</b></div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"> {{result1}} </li>
+                                <li class="list-group-item"> {{result2}} </li>
+                                <li class="list-group-item"> {{result3}} </li>
+                                <li class="list-group-item"> {{result4}} </li>
+                                <li class="list-group-item"> {{result5}} </li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="container-fluid">
+                <h1> .. </h1>
+                    <div class="bs-example">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-header"><b>Word based Query Suggestion</b></div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"> {{words_suggestion}} </li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="container-fluid">
+                <h1> .. </h1>
+                    <div class="bs-example">
+                        <div class="card" style="width: 18rem;">
+                            <div class="card-header"><b>Sentence based Query Suggestion</b></div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"> {{sent_suggestion}} </li>
+                            </ul>
+                        </div>
+                    </div>
+            </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      {% endif %}
+
+
+      {% if sem_search %}
+        
+      <div class="container-fluid">
+        <h2>Semantic Search Results</h2>
+        <div id="accordion">
+          <div class="card">
+            <div class="card-header">
+              <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                {{ doc_id_1}}
+              </a>
+            </div>
+            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+              <div class="card-body">
+                {{doc_text_1}}
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                {{ doc_id_2}}
+            </a>
+            </div>
+            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                {{ doc_text_2}}
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                {{ doc_id_3}}
+              </a>
+            </div>
+            <div id="collapseThree" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                {{ doc_text_3}}
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                {{ doc_id_4}}
+              </a>
+            </div>
+            <div id="collapseThree" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                {{ doc_text_4}}
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
+                {{ doc_id_5}}
+              </a>
+            </div>
+            <div id="collapseThree" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                {{ doc_text_5}}
+              </div>
+            </div>
+          </div>
+        </div>  
+      </div>
+      <br>
+      <br> 
+      {% endif %}
+      
+
+      {% if key_search %}
+        
+      <div class="container-fluid">
+        <h2>Keyword Search Results</h2>
+        <div id="accordion">
+          <div class="card">
+            <div class="card-header">
+              <a class="card-link" data-toggle="collapse" href="#collapseOne">
+                {{ doc_id_1}}
+              </a>
+            </div>
+            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+              <div class="card-body">
+                {{doc_text_1}}
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                {{ doc_id_2}}
+            </a>
+            </div>
+            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                {{ doc_text_2}}
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                {{ doc_id_3}}
+            </a>
+            </div>
+            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                {{ doc_text_3}}
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                {{ doc_id_4}}
+            </a>
+            </div>
+            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                {{ doc_text_4}}
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <a class="collapsed card-link" data-toggle="collapse" href="#collapseTwo">
+                {{ doc_id_5}}
+            </a>
+            </div>
+            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+              <div class="card-body">
+                {{ doc_text_5}}
+              </div>
+            </div>
+          </div>
+
+        </div>
+        </div>
+      <br>
+      <br> 
+      {% endif %}
+      
+      
+    <footer class="footer">
+    <div class="container">
+        <span class="text-muted">© Swiss Re</span>
+    </div>
+    </footer>
+
+    </div>
+  </body>
+</html>

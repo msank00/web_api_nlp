@@ -25,6 +25,7 @@ def reset_page():
 
 def get_query_suggestion(query: str):
 
+    print(query)
     headers = {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -37,9 +38,31 @@ def get_query_suggestion(query: str):
         url_query_emb_api, data=json.dumps(payload), headers=headers
     )
 
-    query_emb = json.loads(response.content)
+    print("here i am ...")
+    result = json.loads(response.content)
 
-    return query_emb
+    return result
+
+def get_documents_by_semantic_search(query: str):
+
+    print(query)
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
+
+    url_query_emb_api = "http://scl000106748.sccloud.swissre.com:8081/semsearch"
+    payload = {"query": query}
+
+    response = req.post(
+        url_query_emb_api, data=json.dumps(payload), headers=headers
+    )
+
+    print("here i am ...")
+    result = json.loads(response.content)
+
+    return result
+
 
 @app.route("/queryexpansion/", methods=['POST'])
 def query_expansion():
@@ -47,17 +70,18 @@ def query_expansion():
     query_str = request.form['text1']
     print(query_str)
     result = get_query_suggestion(query_str)
-    #print(result)
+    exp_query = result["suggestions"]["ngram"]
+    print(exp_query)
     do_query_expansion = True
 
     return render_template(form_type, 
                             query_expand = do_query_expansion, 
                             query = query_str, 
-                            result1 = "result 1", 
-                            result2 = "result 2", 
-                            result3 = "result 3", 
-                            result4 = "result 4", 
-                            result5 = "result 5")
+                            result1 = exp_query[0], 
+                            result2 = exp_query[1], 
+                            result3 = exp_query[2], 
+                            result4 = exp_query[3], 
+                            result5 = exp_query[4])
 
 @app.route("/querysearch/", methods=['POST'])
 def query_search():
@@ -65,20 +89,22 @@ def query_search():
     query_str = request.form['text2']
     do_sem_search = True
 
-    result = get_search_result(query_str)
+    # result = get_search_result(query_str)
+    result = get_documents_by_semantic_search(query_str)
+    print(result["documents"][0]["doc_id"])
 
     return render_template(form_type, 
                             sem_search = do_sem_search, 
-                            doc_id_1 = result["rank1"]["doc_id"], 
-                            doc_text_1 = result["rank1"]["doc_text"], 
-                            doc_id_2 = result["rank2"]["doc_id"], 
-                            doc_text_2 = result["rank2"]["doc_text"], 
-                            doc_id_3 = result["rank3"]["doc_id"], 
-                            doc_text_3 = result["rank3"]["doc_text"],
-                            doc_id_4 = result["rank4"]["doc_id"], 
-                            doc_text_4 = result["rank4"]["doc_text"],
-                            doc_id_5 = result["rank5"]["doc_id"], 
-                            doc_text_5 = result["rank5"]["doc_text"])
+                            doc_id_1 = result["documents"][0]["doc_id"], 
+                            doc_text_1 = result["documents"][0]["content"], 
+                            doc_id_2 = result["documents"][1]["doc_id"], 
+                            doc_text_2 = result["documents"][1]["content"], 
+                            doc_id_3 = result["documents"][2]["doc_id"], 
+                            doc_text_3 = result["documents"][2]["content"],
+                            doc_id_4 = result["documents"][3]["doc_id"], 
+                            doc_text_4 = result["documents"][3]["content"],
+                            doc_id_5 = result["documents"][4]["doc_id"], 
+                            doc_text_5 = result["documents"][4]["content"])
 
 def get_search_result(query: str):
 
