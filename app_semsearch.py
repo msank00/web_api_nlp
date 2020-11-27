@@ -4,7 +4,9 @@ from sklearn.metrics.pairwise import cosine_similarity
 from nltk.corpus import stopwords
 import numpy as np
 import uuid
+import json
 from faker import Faker
+import requests as req
 fk = Faker()
 
 set(stopwords.words('english'))
@@ -21,10 +23,31 @@ def my_form():
 def reset_page():
     return render_template(form_type)
 
+def get_query_suggestion(query: str):
+
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+    }
+
+    url_query_emb_api = "http://scl000106748.sccloud.swissre.com:8000/get_query_expansion"
+    payload = {"string": query}
+
+    response = req.post(
+        url_query_emb_api, data=json.dumps(payload), headers=headers
+    )
+
+    query_emb = json.loads(response.content)
+
+    return query_emb
+
 @app.route("/queryexpansion/", methods=['POST'])
 def query_expansion():
 
     query_str = request.form['text1']
+    print(query_str)
+    result = get_query_suggestion(query_str)
+    #print(result)
     do_query_expansion = True
 
     return render_template(form_type, 
