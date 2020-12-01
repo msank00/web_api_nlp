@@ -31,7 +31,7 @@
                         <textarea
                           class="form-control"
                           name="text1"
-                          rows="2"
+                          rows="1"
                           id="comment"
                         ></textarea>
                       </div>
@@ -42,7 +42,7 @@
                   <div class="row">
                     <div class="col px-md-5">
                         <div class="text-center">
-                            <button class="btn btn-dark btn-lg" type="submit">Expand Query</button>
+                            <button class="btn btn-dark btn" type="submit">Expand Query</button>
                         </div>    
                     </div>
         
@@ -59,7 +59,7 @@
                         <textarea
                           class="form-control"
                           name="text2"
-                          rows="2"
+                          rows="1"
                           id="comment"
                         ></textarea>
                       </div>
@@ -70,7 +70,7 @@
                   <div class="row">
                     <div class="col px-md-5">
                         <div class="text-center">
-                            <button class="btn btn-dark btn-lg" type="submit">Search Documents - Semantic</button>
+                            <button class="btn btn-dark btn" type="submit">Search Documents - Semantic</button>
                         </div>    
                     </div>
         
@@ -79,6 +79,7 @@
               </form>
         </div>
     
+        
         <div class="col-sm">
             <form method="POST" action="/keywordsearch/">
                 <div class="container-fluid">
@@ -88,7 +89,7 @@
                         <textarea
                           class="form-control"
                           name="text3"
-                          rows="2"
+                          rows="1"
                           id="comment"
                         ></textarea>
                       </div>
@@ -99,7 +100,7 @@
                   <div class="row">
                     <div class="col px-md-5">
                         <div class="text-center">
-                            <button class="btn btn-dark btn-lg" type="submit">Search Documents - Keyword</button>
+                            <button class="btn btn-dark" type="submit">Search Documents - Keyword</button>
                         </div>    
                     </div>
         
@@ -117,7 +118,7 @@
         <div class="row">
             <div class="col px-md-5">
                 <div class="text-center">
-                    <button class="btn btn-danger btn-lg btn-custom-width" type="submit">Reset</button>
+                    <button class="btn btn-danger" type="submit">Reset</button>
                 </div>    
             </div>
 
@@ -125,12 +126,29 @@
       </form>
 
       <br>
+      <br>
+      <br>
 
       {% if query_expand %}
+
+      <div class="container-fluid">
+        <h3>Natural language input:</h3>
+        <div class="row">
+          <div class="col-sm">
+            <div class="card">
+              <div class="card-body">
+                <b>{{query}}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+  
+        </div>
+
       <div class="row">
         <div class="col-sm">
             <div class="container-fluid">
-                <h1> Input Query: {{query}} </h1>
                     <div class="bs-example">
                         <div class="card" style="width: 18rem;">
                             <div class="card-header"><b>N-gram based Query Suggestion</b></div>
@@ -152,7 +170,9 @@
                         <div class="card" style="width: 18rem;">
                             <div class="card-header"><b>Word based Query Suggestion</b></div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"> {{words_suggestion}} </li>
+                                <li class="list-group-item"> {{words_suggestion_1}} </li>
+                                <li class="list-group-item"> {{words_suggestion_2}} </li>
+                                <li class="list-group-item"> {{words_suggestion_3}} </li>
                             </ul>
                         </div>
                     </div>
@@ -165,7 +185,11 @@
                         <div class="card" style="width: 18rem;">
                             <div class="card-header"><b>Sentence based Query Suggestion</b></div>
                             <ul class="list-group list-group-flush">
-                                <li class="list-group-item"> {{sent_suggestion}} </li>
+                                <li class="list-group-item"> {{sent_suggestion_1}} </li>
+                                <li class="list-group-item"> {{sent_suggestion_2}} </li>
+                                <li class="list-group-item"> {{sent_suggestion_3}} </li>
+                                <li class="list-group-item"> {{sent_suggestion_4}} </li>
+                                <li class="list-group-item"> {{sent_suggestion_5}} </li>
                             </ul>
                         </div>
                     </div>
@@ -180,7 +204,15 @@
       {% if sem_search %}
         
       <div class="container-fluid">
-        <h2>Semantic Search Results</h2>
+        
+        <h3>Natural language input:</h3>
+        <div class="card">
+          <div class="card-body">
+            <b>{{query}}</b>
+          </div>
+        </div>
+        <br>
+        <h2>Search Results</h2>
         <div id="accordion">
           <div class="card">
             <div class="card-header">
@@ -252,7 +284,14 @@
       {% if key_search %}
         
       <div class="container-fluid">
-        <h2>Keyword Search Results</h2>
+        <h3>Keyword Search Results</h3>
+        <div class="card">
+          <div class="card-body">
+            <b>{{query}}</b>
+          </div>
+        </div>
+        <br>
+
         <div id="accordion">
           <div class="card">
             <div class="card-header">

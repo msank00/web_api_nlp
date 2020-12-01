@@ -13,7 +13,7 @@ set(stopwords.words('english'))
 
 app = Flask(__name__)
 
-form_type = "form_boost_v4.html"
+form_type = "form_boost_hackathon.html"
 
 @app.route("/")
 def my_form():
@@ -84,8 +84,14 @@ def query_expansion():
                             result3 = ngram_exp_query[2], 
                             result4 = ngram_exp_query[3], 
                             result5 = ngram_exp_query[4],
-                            words_suggestion = words_exp_query,
-                            sent_suggestion = sent_exp_query)
+                            words_suggestion_1 = words_exp_query[0],
+                            words_suggestion_2 = words_exp_query[1],
+                            words_suggestion_3 = words_exp_query[2],
+                            sent_suggestion_1 = sent_exp_query[0], 
+                            sent_suggestion_2 = sent_exp_query[1],
+                            sent_suggestion_3 = sent_exp_query[2],
+                            sent_suggestion_4 = sent_exp_query[3],
+                            sent_suggestion_5 = sent_exp_query[4])
 
 @app.route("/querysearch/", methods=['POST'])
 def query_search():
@@ -97,17 +103,34 @@ def query_search():
     result = get_documents_by_semantic_search(query_str)
     print(result["documents"][0]["doc_id"])
 
+    query_emb = list(np.random.rand(20))
+    payload_template_dummy = {
+        "query": {
+            "elastiknn_nearest_neighbors": {
+                "field": "content.contentVector",                     
+                "vec": {                               
+                    "values": query_emb+["..."]
+                },
+                "model": "lsh", 
+                "similarity": "angular",
+                "candidates": 50                   
+            }
+        }
+    }
+
     return render_template(form_type, 
                             sem_search = do_sem_search, 
-                            doc_id_1 = result["documents"][0]["doc_id"], 
+                            query = query_str,
+                            payload_template_html = payload_template_dummy,
+                            doc_id_1 = f"Doc id: {result['documents'][0]['doc_id']}", 
                             doc_text_1 = result["documents"][0]["content"], 
-                            doc_id_2 = result["documents"][1]["doc_id"], 
+                            doc_id_2 = f"Doc id: {result['documents'][1]['doc_id']}",  
                             doc_text_2 = result["documents"][1]["content"], 
-                            doc_id_3 = result["documents"][2]["doc_id"], 
+                            doc_id_3 = f"Doc id: {result['documents'][2]['doc_id']}",  
                             doc_text_3 = result["documents"][2]["content"],
-                            doc_id_4 = result["documents"][3]["doc_id"], 
+                            doc_id_4 = f"Doc id: {result['documents'][3]['doc_id']}",  
                             doc_text_4 = result["documents"][3]["content"],
-                            doc_id_5 = result["documents"][4]["doc_id"], 
+                            doc_id_5 = f"Doc id: {result['documents'][4]['doc_id']}",  
                             doc_text_5 = result["documents"][4]["content"])
 
 
@@ -123,15 +146,16 @@ def keyword_search():
     
     return render_template(form_type, 
                             key_search = do_key_search, 
-                            doc_id_1 = result["documents"][0]["doc_id"], 
+                            query = query_str,
+                            doc_id_1 = f"Doc id: {result['documents'][0]['doc_id']}", 
                             doc_text_1 = result["documents"][0]["content"], 
-                            doc_id_2 = result["documents"][1]["doc_id"], 
+                            doc_id_2 = f"Doc id: {result['documents'][1]['doc_id']}", 
                             doc_text_2 = result["documents"][1]["content"],
-                            doc_id_3 = result["documents"][2]["doc_id"], 
+                            doc_id_3 = f"Doc id: {result['documents'][2]['doc_id']}",  
                             doc_text_3 = result["documents"][2]["content"],
-                            doc_id_4 = result["documents"][3]["doc_id"], 
+                            doc_id_4 = f"Doc id: {result['documents'][3]['doc_id']}",  
                             doc_text_4 = result["documents"][3]["content"],
-                            doc_id_5 = result["documents"][4]["doc_id"], 
+                            doc_id_5 = f"Doc id: {result['documents'][4]['doc_id']}",  
                             doc_text_5 = result["documents"][4]["content"])
 
     
@@ -168,5 +192,5 @@ def get_search_result(query: str):
     return result
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0",port=8090, threaded=True)
+    app.run(debug=True, host="0.0.0.0",port=8086, threaded=True)
     
